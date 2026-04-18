@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Robô Gerador EAN-13 (Automação Industrial)</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #1e1e1e; color: #e0e0e0; }
+        .container { max-width: 1200px; margin: auto; background: #2d2d2d; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        
+        .grid-pacotes { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 15px; 
+            margin-bottom: 20px; 
+        }
+        .pacote-box { background: #1e1e1e; padding: 12px; border-radius: 8px; border: 1px solid #444; }
+        .pacote-box label { display: block; font-weight: bold; margin-bottom: 8px; color: #007acc; font-size: 13px; text-transform: uppercase; border-left: 3px solid #007acc; padding-left: 8px;}
+        
+        textarea { 
+            width: 100%; 
+            padding: 10px; 
+            font-size: 12px; 
+            border: 1px solid #333; 
+            border-radius: 4px; 
+            box-sizing: border-box; 
+            background: #252526; 
+            color: #ccc; 
+            resize: vertical; 
+            height: 100px;
+            font-family: 'Consolas', monospace;
+        }
+
+        .botoes-acao { 
+            display: flex; 
+            justify-content: center; 
+            gap: 20px; 
+            margin-bottom: 20px; 
+            position: sticky; 
+            top: 0; 
+            background: #2d2d2d; 
+            padding: 10px 0; 
+            z-index: 100;
+        }
+        
+        .btn-gerar { background-color: #007acc; color: white; border: none; padding: 15px 20px; font-size: 16px; cursor: pointer; border-radius: 6px; width: 100%; max-width: 450px; font-weight: bold; transition: background 0.3s;}
+        .btn-gerar:hover { background-color: #005f9e; }
+        
+        .btn-zip { background-color: #8a2be2; color: white; border: none; padding: 15px 20px; font-size: 16px; cursor: pointer; border-radius: 6px; width: 100%; max-width: 450px; font-weight: bold; transition: background 0.3s; display: none; }
+        .btn-zip:hover { background-color: #7b24c9; }
+        
+        #resultado { display: flex; flex-direction: column; gap: 20px; align-items: center;}
+        .barcode-card { background: #1e1e1e; color: #e0e0e0; padding: 15px; border-radius: 8px; text-align: center; width: 100%; max-width: 800px; border: 1px solid #333;}
+        
+        .badge-pacote { background: #007acc; color: white; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-bottom: 10px; display: inline-block; }
+        
+        .barcode-card img { width: 100%; max-width: 600px; cursor: zoom-in; border-radius: 0px; box-shadow: 0 4px 8px rgba(0,0,0,0.5); border: 1px solid #444;}
+        .erro-msg { color: #ff4d4d; font-weight: bold; width: 100%; text-align: center; margin: 0;}
+        #hidden-canvas { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🤖 Robô Gerador EAN-13 (Sistema de Pacotes Completo)</h2>
+    <p>Preencha os campos abaixo com os EANs do Excel. Gere as imagens e baixe todos os ZIPs categorizados de uma só vez.</p>
+    
+    <div class="grid-pacotes">
+        <div class="pacote-box">
+            <label>💊 MEDIC CONS PAC</label>
+            <textarea id="cat-med-cons" placeholder="EANs aqui..."></textarea>
+        </div>
+        <div class="pacote-box">
+            <label>🏪 CONVENIENCIA</label>
+            <textarea id="cat-conv" placeholder="EANs aqui..."></textarea>
+        </div>
+        <div class="pacote-box">
+            <label>🧬 MEDIC RX GENERICO</label>
+            <textarea id="cat-med-rx" placeholder="EANs aqui..."></textarea>
+        </div>
+
+        <div class="pacote-box">
+            <label>🧼 HIGIENE PESSOAL</label>
+            <textarea id="cat-higiene" placeholder="EANs aqui..."></textarea>
+        </div>
+        <div class="pacote-box">
+            <label>🧴 PERFUMARIA</label>
+            <textarea id="cat-perfume" placeholder="EANs aqui..."></textarea>
+        </div>
+        <div class="pacote-box">
+            <label>🧓 CUIDADO ADULTO</label>
+            <textarea id="cat-adulto" placeholder="EANs aqui..."></textarea>
+        </div>
+
+        <div class="pacote-box">
+            <label>👶 UNIVERSO INFANTIL</label>
+            <textarea id="cat-infantil" placeholder="EANs aqui..."></textarea>
+        </div>
+        <div class="pacote-box">
+            <label>✨ DERMOCOSMETICOS</label>
+            <textarea id="cat-dermo" placeholder="EANs aqui..."></textarea>
+        </div>
+        <div class="pacote-box">
+            <label>🐶 PET CARE</label>
+            <textarea id="cat-petcare" placeholder="EANs aqui..."></textarea>
+        </div>
+
+        <div class="pacote-box">
+            <label>🥗 NUTRIÇÃO SAUDÁVEL</label>
+            <textarea id="cat-nutricao" placeholder="EANs aqui..."></textarea>
+        </div>
+        <div class="pacote-box">
+            <label>🏷️ MIP MARCA</label>
+            <textarea id="cat-mip" placeholder="EANs aqui..."></textarea>
+        </div>
+        <div class="pacote-box">
+            <label>🛒 ALIMENTOS</label>
+            <textarea id="cat-alimentos" placeholder="EANs aqui..."></textarea>
+        </div>
+    </div>
+    
+    <div class="botoes-acao">
+        <button class="btn-gerar" onclick="gerarCodigos()">1. PROCESSAR IMAGENS</button>
+        <button id="btnBaixarZip" class="btn-zip" onclick="baixarTodosZips()">2. 📦 BAIXAR TODOS OS ZIPS</button>
+    </div>
+
+    <div id="resultado"></div>
+</div>
+
+<canvas id="hidden-canvas"></canvas>
+
+<script>
+    var dadosPorPacote = {};
+
+    const pacotes = [
+        { id: 'cat-med-cons', titulo: 'Medic Cons Pac', nomeArquivo: 'MEDIC_CONS_PAC' },
+        { id: 'cat-conv', titulo: 'Conveniência', nomeArquivo: 'CONVENIENCIA' },
+        { id: 'cat-med-rx', titulo: 'Medic Rx Generico', nomeArquivo: 'MEDIC_RX_GENERICO' },
+        { id: 'cat-higiene', titulo: 'Higiene Pessoal', nomeArquivo: 'HIGIENE_PESSOAL' },
+        { id: 'cat-perfume', titulo: 'Perfumaria', nomeArquivo: 'PERFUMARIA' },
+        { id: 'cat-adulto', titulo: 'Cuidado Adulto', nomeArquivo: 'CUIDADO_ADULTO' },
+        { id: 'cat-infantil', titulo: 'Universo Infantil', nomeArquivo: 'UNIVERSO_INFANTIL' },
+        { id: 'cat-dermo', titulo: 'Dermocosmeticos', nomeArquivo: 'DERMOCOSMETICOS' },
+        { id: 'cat-petcare', titulo: 'Pet Care', nomeArquivo: 'PET_CARE' },
+        { id: 'cat-nutricao', titulo: 'Nutrição Saudável', nomeArquivo: 'NUTRICAO_SAUDAVEL' },
+        { id: 'cat-mip', titulo: 'MIP Marca', nomeArquivo: 'MIP_MARCA' },
+        { id: 'cat-alimentos', titulo: 'Alimentos', nomeArquivo: 'ALIMENTOS' }
+    ];
+
+    function gerarCodigos() {
+        var resultadoDiv = document.getElementById('resultado');
+        var btnZip = document.getElementById('btnBaixarZip');
+        
+        resultadoDiv.innerHTML = ''; 
+        dadosPorPacote = {};
+        btnZip.style.display = 'none';
+        var temImagem = false;
+
+        pacotes.forEach(function(pacote) {
+            var textarea = document.getElementById(pacote.id).value;
+            var eans = textarea.split('\n').map(function(ean) { return ean.trim(); }).filter(function(ean) { return ean.length > 0; });
+
+            if (eans.length > 0) {
+                dadosPorPacote[pacote.nomeArquivo] = [];
+            }
+
+            eans.forEach(function(ean) {
+                if(ean.length === 12 || ean.length === 13) {
+                    temImagem = true;
+                    var card = document.createElement('div');
+                    card.className = 'barcode-card';
+
+                    var badge = document.createElement('div');
+                    badge.className = 'badge-pacote';
+                    badge.innerText = pacote.titulo;
+                    card.appendChild(badge);
+                    card.appendChild(document.createElement('br'));
+
+                    var img = document.createElement('img');
+                    
+                    try {
+                        JsBarcode("#hidden-canvas", ean, {
+                            format: "EAN13", displayValue: true, fontSize: 46, fontOptions: "bold", textMargin: 8, width: 4, height: 200,            
+                            background: "#ffffff", lineColor: "#000000", marginTop: 10, marginBottom: 15, marginLeft: 30, marginRight: 30, font: "monospace"
+                        });
+                        
+                        var canvasEscondido = document.getElementById("hidden-canvas");
+                        var finalCanvas = document.createElement('canvas');
+                        finalCanvas.width = canvasEscondido.width + 300; 
+                        finalCanvas.height = canvasEscondido.height; 
+                        var finalCtx = finalCanvas.getContext('2d');
+                        
+                        finalCtx.fillStyle = "#000000"; 
+                        finalCtx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+                        
+                        var codigoX = (finalCanvas.width - canvasEscondido.width) / 2;
+                        finalCtx.drawImage(canvasEscondido, codigoX, 0); 
+                        
+                        var finalDataUrl = finalCanvas.toDataURL("image/png");
+                        img.src = finalDataUrl;
+                        card.appendChild(img);
+                        resultadoDiv.appendChild(card);
+                        
+                        dadosPorPacote[pacote.nomeArquivo].push({
+                            nome: ean + '.png',
+                            dadosBase64: finalDataUrl.split(',')[1] 
+                        });
+                        
+                    } catch (e) {
+                        card.innerHTML = "<p class='erro-msg'>❌ Erro no EAN: " + ean + "</p>";
+                        resultadoDiv.appendChild(card);
+                    }
+                }
+            });
+        });
+
+        if (temImagem) {
+            btnZip.style.display = 'block';
+            window.scrollTo({ top: document.querySelector('.botoes-acao').offsetTop, behavior: 'smooth' });
+        }
+    }
+
+    async function baixarTodosZips() {
+        var btnZip = document.getElementById('btnBaixarZip');
+        var textoOriginal = btnZip.innerText;
+        btnZip.innerText = "⏳ BAIXANDO...";
+        btnZip.disabled = true;
+
+        for (const [nomePacote, imagens] of Object.entries(dadosPorPacote)) {
+            if (imagens.length > 0) {
+                var zip = new JSZip();
+                imagens.forEach(function(img) {
+                    zip.file(img.nome, img.dadosBase64, {base64: true});
+                });
+
+                const conteudoZip = await zip.generateAsync({type:"blob"});
+                var link = document.createElement("a");
+                link.href = URL.createObjectURL(conteudoZip);
+                link.download = nomePacote + ".zip";
+                link.click();
+
+                await new Promise(resolve => setTimeout(resolve, 600));
+            }
+        }
+
+        btnZip.innerText = textoOriginal;
+        btnZip.disabled = false;
+    }
+</script>
+
+</body>
+</html>
