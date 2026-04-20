@@ -1,0 +1,52 @@
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #18457a; color: #18457a; }
+.container { max-width: 1200px; margin: auto; background: #ababc0; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+
+.grid-pacotes { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 15px; 
+    margin-bottom: 20px; 
+}
+.pacote-box { background: #1e1e1e; padding: 12px; border-radius: 8px; border: 1px solid #444; }
+.pacote-box label { display: block; font-weight: bold; margin-bottom: 8px; color: #007acc; font-size: 13px; text-transform: uppercase; border-left: 3px solid #007acc; padding-left: 8px;}
+
+textarea { 
+    width: 100%; 
+    padding: 10px; 
+    font-size: 12px; 
+    border: 1px solid #333; 
+    border-radius: 4px; 
+    box-sizing: border-box; 
+    background: #252526; 
+    color: #ccc; 
+    resize: vertical; 
+    height: 100px;
+    font-family: 'Consolas', monospace;
+}
+
+.botoes-acao { 
+    display: flex; 
+    justify-content: center; 
+    gap: 20px; 
+    margin-bottom: 20px; 
+    position: sticky; 
+    top: 0; 
+    background: #a7a8b7; 
+    padding: 10px 0; 
+    z-index: 100;
+}
+
+.btn-gerar { background-color: #007acc; color: white; border: none; padding: 15px 20px; font-size: 16px; cursor: pointer; border-radius: 6px; width: 100%; max-width: 450px; font-weight: bold; transition: background 0.3s;}
+.btn-gerar:hover { background-color: #005f9e; }
+
+.btn-zip { background-color: #8a2be2; color: white; border: none; padding: 15px 20px; font-size: 16px; cursor: pointer; border-radius: 6px; width: 100%; max-width: 450px; font-weight: bold; transition: background 0.3s; display: none; }
+.btn-zip:hover { background-color: #7b24c9; }
+
+#resultado { display: flex; flex-direction: column; gap: 20px; align-items: center;}
+.barcode-card { background: #1e1e1e; color: #e0e0e0; padding: 15px; border-radius: 8px; text-align: center; width: 100%; max-width: 800px; border: 1px solid #333;}
+
+.badge-pacote { background: #007acc; color: white; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-bottom: 10px; display: inline-block; }
+
+.barcode-card img { width: 100%; max-width: 600px; cursor: zoom-in; border-radius: 0px; box-shadow: 0 4px 8px rgba(0,0,0,0.5); border: 1px solid #444;}
+.erro-msg { color: #ff4d4d; font-weight: bold; width: 100%; text-align: center; margin: 0;}
+#hidden-canvas { display: none; }
