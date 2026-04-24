@@ -18,10 +18,12 @@ const pacotes = [
 function gerarCodigos() {
     var resultadoDiv = document.getElementById('resultado');
     var btnZip = document.getElementById('btnBaixarZip');
+    var btnPdf = document.getElementById('btnBaixarPdf');
     
     resultadoDiv.innerHTML = ''; 
     dadosPorPacote = {};
     btnZip.style.display = 'none';
+    btnPdf.style.display = 'none';
     var temImagem = false;
 
     pacotes.forEach(function(pacote) {
@@ -58,8 +60,12 @@ function gerarCodigos() {
                     finalCanvas.height = canvasEscondido.height; 
                     var finalCtx = finalCanvas.getContext('2d');
                     
-                    finalCtx.fillStyle = "#000000"; 
+                    finalCtx.fillStyle = "#ffffff"; 
                     finalCtx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+                    
+                    finalCtx.fillStyle = "#000000"; 
+                    finalCtx.fillRect(0, 0, 150, finalCanvas.height); 
+                    finalCtx.fillRect(finalCanvas.width - 150, 0, 150, finalCanvas.height); 
                     
                     var codigoX = (finalCanvas.width - canvasEscondido.width) / 2;
                     finalCtx.drawImage(canvasEscondido, codigoX, 0); 
@@ -84,6 +90,7 @@ function gerarCodigos() {
 
     if (temImagem) {
         btnZip.style.display = 'block';
+        btnPdf.style.display = 'block';
         window.scrollTo({ top: document.querySelector('.botoes-acao').offsetTop, behavior: 'smooth' });
     }
 }
@@ -91,7 +98,7 @@ function gerarCodigos() {
 async function baixarTodosZips() {
     var btnZip = document.getElementById('btnBaixarZip');
     var textoOriginal = btnZip.innerText;
-    btnZip.innerText = "⏳ BAIXANDO...";
+    btnZip.innerText = "⏳ A DESCARREGAR...";
     btnZip.disabled = true;
 
     for (const [nomePacote, imagens] of Object.entries(dadosPorPacote)) {
@@ -113,4 +120,63 @@ async function baixarTodosZips() {
 
     btnZip.innerText = textoOriginal;
     btnZip.disabled = false;
-}   
+}
+
+async function baixarTodosPdfs() {
+    var btnPdf = document.getElementById('btnBaixarPdf');
+    var textoOriginal = btnPdf.innerText;
+    btnPdf.innerText = "⏳ A GERAR PDF ÚNICO...";
+    btnPdf.disabled = true;
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+
+    let currentSlot = 0; 
+    let temAlgumDado = false;
+
+    for (const pacote of pacotes) {
+        const imagens = dadosPorPacote[pacote.nomeArquivo];
+        
+        if (imagens && imagens.length > 0) {
+            temAlgumDado = true;
+
+            for (let i = 0; i < imagens.length; i++) {
+                
+                if (currentSlot === 2) {
+                    doc.addPage();
+                    currentSlot = 0;
+                }
+
+                const imgWidth = 140; 
+                const imgHeight = 60; 
+                const x = (pageWidth - imgWidth) / 2;
+                let yImage = 0;
+
+                if (currentSlot === 0) {
+                    yImage = (pageHeight / 4) - (imgHeight / 2);
+                } else {
+                    yImage = (pageHeight * 0.75) - (imgHeight / 2);
+                }
+
+                if (i === 0) {
+                    doc.setFontSize(14);
+                    doc.text(pacote.titulo.toUpperCase(), pageWidth / 2, yImage - 10, { align: 'center' });
+                }
+
+                const imgData = "data:image/png;base64," + imagens[i].dadosBase64;
+                doc.addImage(imgData, 'PNG', x, yImage, imgWidth, imgHeight);
+                
+                currentSlot++; 
+            }
+        }
+    }
+
+    if (temAlgumDado) {
+        doc.save("EANs_Completo_KINDLE.pdf");
+    }
+
+    btnPdf.innerText = textoOriginal;
+    btnPdf.disabled = false;
+}
