@@ -42,6 +42,9 @@ textarea {
 .btn-zip { background-color: #8a2be2; color: white; border: none; padding: 15px 20px; font-size: 16px; cursor: pointer; border-radius: 6px; width: 100%; max-width: 450px; font-weight: bold; transition: background 0.3s; display: none; }
 .btn-zip:hover { background-color: #7b24c9; }
 
+.btn-pdf { background-color: #d32f2f; color: white; border: none; padding: 15px 20px; font-size: 16px; cursor: pointer; border-radius: 6px; width: 100%; max-width: 450px; font-weight: bold; transition: background 0.3s; display: none; }
+.btn-pdf:hover { background-color: #b71c1c; }
+
 #resultado { display: flex; flex-direction: column; gap: 20px; align-items: center;}
 .barcode-card { background: #1e1e1e; color: #e0e0e0; padding: 15px; border-radius: 8px; text-align: center; width: 100%; max-width: 800px; border: 1px solid #333;}
 
