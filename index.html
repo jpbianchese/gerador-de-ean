@@ -10,12 +10,13 @@
     
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
 <div class="container">
     <h2>🤖 Robô Gerador EAN-13 (Sistema de Pacotes Completo)</h2>
-    <p>Preencha os campos abaixo com os EANs do Excel. Gere as imagens e baixe todos os ZIPs categorizados de uma só vez.</p>
+    <p>Preencha os campos abaixo com os EANs. Gere as imagens, baixe em ZIP ou exporte os PDFs direto para o Kindle.</p>
     
     <div class="grid-pacotes">
         <div class="pacote-box">
@@ -30,7 +31,6 @@
             <label>🧬 MEDIC RX GENERICO</label>
             <textarea id="cat-med-rx" placeholder="EANs aqui..."></textarea>
         </div>
-
         <div class="pacote-box">
             <label>🧼 HIGIENE PESSOAL</label>
             <textarea id="cat-higiene" placeholder="EANs aqui..."></textarea>
@@ -43,7 +43,6 @@
             <label>🧓 CUIDADO ADULTO</label>
             <textarea id="cat-adulto" placeholder="EANs aqui..."></textarea>
         </div>
-
         <div class="pacote-box">
             <label>👶 UNIVERSO INFANTIL</label>
             <textarea id="cat-infantil" placeholder="EANs aqui..."></textarea>
@@ -56,7 +55,6 @@
             <label>🐶 PET CARE</label>
             <textarea id="cat-petcare" placeholder="EANs aqui..."></textarea>
         </div>
-
         <div class="pacote-box">
             <label>🥗 NUTRIÇÃO SAUDÁVEL</label>
             <textarea id="cat-nutricao" placeholder="EANs aqui..."></textarea>
@@ -73,7 +71,8 @@
     
     <div class="botoes-acao">
         <button class="btn-gerar" onclick="gerarCodigos()">1. PROCESSAR IMAGENS</button>
-        <button id="btnBaixarZip" class="btn-zip" onclick="baixarTodosZips()">2. 📦 BAIXAR TODOS OS ZIPS</button>
+        <button id="btnBaixarZip" class="btn-zip" onclick="baixarTodosZips()">2.  BAIXAR ZIPS</button>
+        <button id="btnBaixarPdf" class="btn-pdf" onclick="baixarTodosPdfs()">3.  BAIXAR PDF EDITADO</button>
     </div>
 
     <div id="resultado"></div>
