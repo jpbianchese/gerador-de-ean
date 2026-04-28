@@ -130,58 +130,95 @@ async function baixarTodosZips() {
 async function baixarTodosPdfs() {
     var btnPdf = document.getElementById('btnBaixarPdf');
     var textoOriginal = btnPdf.innerText;
-    btnPdf.innerText = "⏳ A GERAR PDF ÚNICO...";
+    btnPdf.innerText = "⏳ A GERAR PDFs...";
     btnPdf.disabled = true;
 
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
 
-    let currentSlot = 0; 
-    let temAlgumDado = false;
+    let docCompleto = new jsPDF();
+    const pageWidth = docCompleto.internal.pageSize.getWidth();
+    const pageHeight = docCompleto.internal.pageSize.getHeight();
+    
+    let currentSlotCompleto = 0; 
+    let temDadoCompleto = false;
 
-    for (const pacote of pacotes) {
+    const pacotesNormais = pacotes.filter(p => !p.id.startsWith('cat-prec'));
+    const pacotesPrecificadores = pacotes.filter(p => p.id.startsWith('cat-prec'));
+
+    for (const pacote of pacotesNormais) {
         const imagens = dadosPorPacote[pacote.nomeArquivo];
         
         if (imagens && imagens.length > 0) {
-            temAlgumDado = true;
+            temDadoCompleto = true;
 
             for (let i = 0; i < imagens.length; i++) {
-                
-                if (currentSlot === 2) {
-                    doc.addPage();
-                    currentSlot = 0;
+                if (currentSlotCompleto === 2) {
+                    docCompleto.addPage();
+                    currentSlotCompleto = 0;
                 }
 
                 const imgWidth = 140; 
                 const imgHeight = 60; 
                 const x = (pageWidth - imgWidth) / 2;
-                let yImage = 0;
-
-                if (currentSlot === 0) {
-                    yImage = (pageHeight / 4) - (imgHeight / 2);
-                } else {
-                    yImage = (pageHeight * 0.75) - (imgHeight / 2);
-                }
+                let yImage = currentSlotCompleto === 0 ? (pageHeight / 4) - (imgHeight / 2) : (pageHeight * 0.75) - (imgHeight / 2);
 
                 if (i === 0) {
-                    doc.setFontSize(14);
-                    doc.text(pacote.titulo.toUpperCase(), pageWidth / 2, yImage - 10, { align: 'center' });
+                    docCompleto.setFontSize(14);
+                    docCompleto.text(pacote.titulo.toUpperCase(), pageWidth / 2, yImage - 10, { align: 'center' });
                 }
 
                 const imgData = "data:image/png;base64," + imagens[i].dadosBase64;
-                doc.addImage(imgData, 'PNG', x, yImage, imgWidth, imgHeight);
+                docCompleto.addImage(imgData, 'PNG', x, yImage, imgWidth, imgHeight);
                 
-                currentSlot++; 
+                currentSlotCompleto++; 
             }
         }
     }
 
-    if (temAlgumDado) {
+    if (temDadoCompleto) {
         let nomeInput = document.getElementById('nomeArquivoPdf').value.trim();
-        let nomeArquivoFinal = nomeInput !== "" ? nomeInput + ".pdf" : "EANs_Completo_KINDLE.pdf";
-        doc.save(nomeArquivoFinal);
+        let nomeArquivoFinal = nomeInput !== "" ? nomeInput + ".pdf" : "EANs_Pacotes_KINDLE.pdf";
+        docCompleto.save(nomeArquivoFinal);
+        await new Promise(resolve => setTimeout(resolve, 600));
+    }
+
+    for (const pacote of pacotesPrecificadores) {
+        const imagens = dadosPorPacote[pacote.nomeArquivo];
+        
+        if (imagens && imagens.length > 0) {
+            let docPrec = new jsPDF();
+            let currentSlotPrec = 0;
+
+            for (let i = 0; i < imagens.length; i++) {
+                if (currentSlotPrec === 2) {
+                    docPrec.addPage();
+                    currentSlotPrec = 0;
+                }
+
+                const imgWidth = 140; 
+                const imgHeight = 60; 
+                const x = (pageWidth - imgWidth) / 2;
+                let yImage = currentSlotPrec === 0 ? (pageHeight / 4) - (imgHeight / 2) : (pageHeight * 0.75) - (imgHeight / 2);
+
+                if (i === 0) {
+                    docPrec.setFontSize(14);
+                    docPrec.text(pacote.titulo.toUpperCase(), pageWidth / 2, yImage - 10, { align: 'center' });
+                }
+
+                const imgData = "data:image/png;base64," + imagens[i].dadosBase64;
+                docPrec.addImage(imgData, 'PNG', x, yImage, imgWidth, imgHeight);
+                
+                currentSlotPrec++; 
+            }
+
+            let inputId = pacote.id === 'cat-prec-1' ? 'nome-pdf-prec-1' : 'nome-pdf-prec-2';
+            let nomeInputPrec = document.getElementById(inputId).value.trim();
+            let nomeDefault = pacote.titulo.replace(" ", "_") + "_KINDLE.pdf";
+            let nomeArquivoFinalPrec = nomeInputPrec !== "" ? nomeInputPrec + ".pdf" : nomeDefault;
+            
+            docPrec.save(nomeArquivoFinalPrec);
+            await new Promise(resolve => setTimeout(resolve, 600));
+        }
     }
 
     btnPdf.innerText = textoOriginal;
