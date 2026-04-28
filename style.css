@@ -1,12 +1,27 @@
 body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #18457a; color: #18457a; }
 .container { max-width: 1200px; margin: auto; background: #ababc0; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
 
+.precificador-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 2px dashed #666;
+    flex-wrap: wrap;
+}
+.precificador-container .pacote-box {
+    width: 100%;
+    max-width: 400px;
+}
+
 .grid-pacotes { 
     display: grid; 
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
     gap: 15px; 
     margin-bottom: 20px; 
 }
+
 .pacote-box { background: #1e1e1e; padding: 12px; border-radius: 8px; border: 1px solid #444; }
 .pacote-box label { display: block; font-weight: bold; margin-bottom: 8px; color: #007acc; font-size: 13px; text-transform: uppercase; border-left: 3px solid #007acc; padding-left: 8px;}
 
@@ -27,6 +42,7 @@ textarea {
 .botoes-acao { 
     display: flex; 
     justify-content: center; 
+    flex-wrap: wrap;
     gap: 20px; 
     margin-bottom: 20px; 
     position: sticky; 
@@ -36,13 +52,16 @@ textarea {
     z-index: 100;
 }
 
-.btn-gerar { background-color: #007acc; color: white; border: none; padding: 15px 20px; font-size: 16px; cursor: pointer; border-radius: 6px; width: 100%; max-width: 450px; font-weight: bold; transition: background 0.3s;}
+.btn-gerar { background-color: #007acc; color: white; border: none; padding: 15px 20px; font-size: 16px; cursor: pointer; border-radius: 6px; width: 100%; max-width: 300px; font-weight: bold; transition: background 0.3s;}
 .btn-gerar:hover { background-color: #005f9e; }
 
-.btn-zip { background-color: #8a2be2; color: white; border: none; padding: 15px 20px; font-size: 16px; cursor: pointer; border-radius: 6px; width: 100%; max-width: 450px; font-weight: bold; transition: background 0.3s; display: none; }
+.btn-zip { background-color: #8a2be2; color: white; border: none; padding: 15px 20px; font-size: 16px; cursor: pointer; border-radius: 6px; width: 100%; max-width: 250px; font-weight: bold; transition: background 0.3s; display: none; }
 .btn-zip:hover { background-color: #7b24c9; }
 
-.btn-pdf { background-color: #d32f2f; color: white; border: none; padding: 15px 20px; font-size: 16px; cursor: pointer; border-radius: 6px; width: 100%; max-width: 450px; font-weight: bold; transition: background 0.3s; display: none; }
+.input-nome { padding: 15px 10px; font-size: 15px; border-radius: 6px; border: 1px solid #444; background: #252526; color: #fff; width: 100%; max-width: 220px; display: none; box-sizing: border-box; }
+.input-nome::placeholder { color: #888; }
+
+.btn-pdf { background-color: #d32f2f; color: white; border: none; padding: 15px 20px; font-size: 16px; cursor: pointer; border-radius: 6px; width: 100%; max-width: 300px; font-weight: bold; transition: background 0.3s; display: none; }
 .btn-pdf:hover { background-color: #b71c1c; }
 
 #resultado { display: flex; flex-direction: column; gap: 20px; align-items: center;}
