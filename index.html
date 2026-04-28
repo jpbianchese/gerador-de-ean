@@ -14,17 +14,19 @@
 <body>
 
 <div class="container">
-    <h2>Gerador EAN-13</h2>
-    <p>Preencha os campos abaixo com os EANs. Gere as imagens, baixe em ZIP ou exporte os PDFs diretamente.</p>
+    <h2>🤖 Robô Gerador EAN-13 (Sistema de Pacotes Completo)</h2>
+    <p>Preencha os campos abaixo com os EANs. Gere as imagens, baixe em ZIP ou exporte os PDFs direto para o Kindle.</p>
     
     <div class="precificador-container">
         <div class="pacote-box">
-            <label>👤 PRECIFICADOR 1</label>
+            <label>📋 PRECIFICAÇÃO 1</label>
             <textarea id="cat-prec-1" placeholder="EANs avulsos aqui..."></textarea>
+            <input type="text" id="nome-pdf-prec-1" class="input-nome-pacote" placeholder="Nome deste PDF (opcional)" />
         </div>
         <div class="pacote-box">
-            <label>👤 PRECIFICADOR 2</label>
+            <label>📋 PRECIFICAÇÃO 2</label>
             <textarea id="cat-prec-2" placeholder="EANs avulsos aqui..."></textarea>
+            <input type="text" id="nome-pdf-prec-2" class="input-nome-pacote" placeholder="Nome deste PDF (opcional)" />
         </div>
     </div>
     
@@ -81,9 +83,9 @@
     
     <div class="botoes-acao">
         <button class="btn-gerar" onclick="gerarCodigos()">1. PROCESSAR IMAGENS</button>
-        <button id="btnBaixarZip" class="btn-zip" onclick="baixarTodosZips()">2.  BAIXAR ZIPS</button>
-        <input type="text" id="nomeArquivoPdf" class="input-nome" placeholder="Nome do PDF (opcional)" />
-        <button id="btnBaixarPdf" class="btn-pdf" onclick="baixarTodosPdfs()">3.  BAIXAR PDFs (KINDLE)</button>
+        <button id="btnBaixarZip" class="btn-zip" onclick="baixarTodosZips()">2. 📦 BAIXAR ZIPS</button>
+        <input type="text" id="nomeArquivoPdf" class="input-nome" placeholder="Nome do PDF dos Pacotes..." />
+        <button id="btnBaixarPdf" class="btn-pdf" onclick="baixarTodosPdfs()">3. 📄 BAIXAR PDFs (KINDLE)</button>
     </div>
 
     <div id="resultado"></div>
