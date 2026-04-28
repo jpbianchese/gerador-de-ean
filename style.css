@@ -39,6 +39,19 @@ textarea {
     font-family: 'Consolas', monospace;
 }
 
+.input-nome-pacote {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    font-size: 12px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background: #252526;
+    color: #fff;
+}
+.input-nome-pacote::placeholder { color: #777; }
+
 .botoes-acao { 
     display: flex; 
     justify-content: center; 
@@ -58,7 +71,7 @@ textarea {
 .btn-zip { background-color: #8a2be2; color: white; border: none; padding: 15px 20px; font-size: 16px; cursor: pointer; border-radius: 6px; width: 100%; max-width: 250px; font-weight: bold; transition: background 0.3s; display: none; }
 .btn-zip:hover { background-color: #7b24c9; }
 
-.input-nome { padding: 15px 10px; font-size: 15px; border-radius: 6px; border: 1px solid #444; background: #252526; color: #fff; width: 100%; max-width: 220px; display: none; box-sizing: border-box; }
+.input-nome { padding: 15px 10px; font-size: 14px; border-radius: 6px; border: 1px solid #444; background: #252526; color: #fff; width: 100%; max-width: 250px; display: none; box-sizing: border-box; }
 .input-nome::placeholder { color: #888; }
 
 .btn-pdf { background-color: #d32f2f; color: white; border: none; padding: 15px 20px; font-size: 16px; cursor: pointer; border-radius: 6px; width: 100%; max-width: 300px; font-weight: bold; transition: background 0.3s; display: none; }
