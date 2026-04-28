@@ -12,18 +12,22 @@ const pacotes = [
     { id: 'cat-petcare', titulo: 'Pet Care', nomeArquivo: 'PET_CARE' },
     { id: 'cat-nutricao', titulo: 'Nutrição Saudável', nomeArquivo: 'NUTRICAO_SAUDAVEL' },
     { id: 'cat-mip', titulo: 'MIP Marca', nomeArquivo: 'MIP_MARCA' },
-    { id: 'cat-alimentos', titulo: 'Alimentos', nomeArquivo: 'ALIMENTOS' }
+    { id: 'cat-alimentos', titulo: 'Alimentos', nomeArquivo: 'ALIMENTOS' },
+    { id: 'cat-prec-1', titulo: 'Precificador 1', nomeArquivo: 'PRECIFICADOR_1' },
+    { id: 'cat-prec-2', titulo: 'Precificador 2', nomeArquivo: 'PRECIFICADOR_2' }
 ];
 
 function gerarCodigos() {
     var resultadoDiv = document.getElementById('resultado');
     var btnZip = document.getElementById('btnBaixarZip');
     var btnPdf = document.getElementById('btnBaixarPdf');
+    var inputNomePdf = document.getElementById('nomeArquivoPdf');
     
     resultadoDiv.innerHTML = ''; 
     dadosPorPacote = {};
     btnZip.style.display = 'none';
     btnPdf.style.display = 'none';
+    inputNomePdf.style.display = 'none';
     var temImagem = false;
 
     pacotes.forEach(function(pacote) {
@@ -91,6 +95,7 @@ function gerarCodigos() {
     if (temImagem) {
         btnZip.style.display = 'block';
         btnPdf.style.display = 'block';
+        inputNomePdf.style.display = 'block';
         window.scrollTo({ top: document.querySelector('.botoes-acao').offsetTop, behavior: 'smooth' });
     }
 }
@@ -174,7 +179,9 @@ async function baixarTodosPdfs() {
     }
 
     if (temAlgumDado) {
-        doc.save("EANs_Completo_KINDLE.pdf");
+        let nomeInput = document.getElementById('nomeArquivoPdf').value.trim();
+        let nomeArquivoFinal = nomeInput !== "" ? nomeInput + ".pdf" : "EANs_Completo_KINDLE.pdf";
+        doc.save(nomeArquivoFinal);
     }
 
     btnPdf.innerText = textoOriginal;
