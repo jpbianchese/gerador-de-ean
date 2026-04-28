@@ -5,7 +5,6 @@
     <title>Robô Gerador EAN-13 (Automação Industrial)</title>
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
-    
     <link rel="stylesheet" href="style.css">
     
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
@@ -15,8 +14,19 @@
 <body>
 
 <div class="container">
-    <h2>🤖 Robô Gerador EAN-13 (Sistema de Pacotes Completo)</h2>
-    <p>Preencha os campos abaixo com os EANs. Gere as imagens, baixe em ZIP ou exporte os PDFs direto para o Kindle.</p>
+    <h2>Gerador EAN-13</h2>
+    <p>Preencha os campos abaixo com os EANs. Gere as imagens, baixe em ZIP ou exporte os PDFs diretamente.</p>
+    
+    <div class="precificador-container">
+        <div class="pacote-box">
+            <label>👤 PRECIFICADOR 1</label>
+            <textarea id="cat-prec-1" placeholder="EANs avulsos aqui..."></textarea>
+        </div>
+        <div class="pacote-box">
+            <label>👤 PRECIFICADOR 2</label>
+            <textarea id="cat-prec-2" placeholder="EANs avulsos aqui..."></textarea>
+        </div>
+    </div>
     
     <div class="grid-pacotes">
         <div class="pacote-box">
@@ -72,7 +82,8 @@
     <div class="botoes-acao">
         <button class="btn-gerar" onclick="gerarCodigos()">1. PROCESSAR IMAGENS</button>
         <button id="btnBaixarZip" class="btn-zip" onclick="baixarTodosZips()">2.  BAIXAR ZIPS</button>
-        <button id="btnBaixarPdf" class="btn-pdf" onclick="baixarTodosPdfs()">3.  BAIXAR PDF EDITADO</button>
+        <input type="text" id="nomeArquivoPdf" class="input-nome" placeholder="Nome do PDF (opcional)" />
+        <button id="btnBaixarPdf" class="btn-pdf" onclick="baixarTodosPdfs()">3.  BAIXAR PDFs (KINDLE)</button>
     </div>
 
     <div id="resultado"></div>
